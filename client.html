@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Test</title>
+        <script type="text/javascript">
+            var url = "ws://127.0.0.1:9000";
+            // var url = "ws://echo.websocket.org/";
+            function a(){
+                socket = new WebSocket(url);
+                socket.onopen = function(e){
+                    document.getElementById('echo').innerHTML = 'in a()';
+                    try{
+                        socket.send(document.getElementById('txt').value);
+                        console.log('success');
+                    }
+                    catch(err){
+                        console.log(err.message);
+                        document.getElementById('echo').innerHTML = err.message;
+                    }
+                    onOpen(e);
+                };
+                socket.onmessage = function(e){
+                    onMessage(e);
+                };
+                socket.onclose = function(e){
+                    // onClose(socket);
+                };
+            }
+            function onOpen(e){
+                document.getElementById('echo').innerHTML = 'connection opened';
+            }
+            function onMessage(e){
+                document.getElementById('echo').innerHTML = e.data;
+            }
+            
+        </script>
+    </head>
+    <body>
+        <h2> Testing the C socket server </h2>
+        <form>
+            Type something here: <br />
+            <input type="text" name="input" id='txt'>
+        </form>
+        <button type = "button" onclick="a()"> click </button>
+        <p id="echo"> </p>
+</html>
